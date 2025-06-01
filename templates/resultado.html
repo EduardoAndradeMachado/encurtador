@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
+    <title>Recuperar</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+
+    <main class="grid">
+        <section id="result">
+            <a href="/">
+                <img src="{{ url_for('static', filename='assets/images/global/Logo.svg') }}" alt="logo">
+            </a>
+            <form>
+                <input type="text" name="short_url" autocomplete="off" autofocus disabled="on" value="{{short_url}}">
+                <input type="submit" value="Copiar">
+                <p><b>{{clicks}}</b> acessos nesse link.</p>
+            </form>
+        </section>
+    </main>
+
+
+    {% include 'footer.html' %}
+</body>
+
+</html>
