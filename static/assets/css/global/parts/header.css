@@ -1,0 +1,25 @@
+header {
+    width: 100%;
+    background-color: var(--color-cinza-claro);
+}
+
+#menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 18px;
+    padding: 24px 0px;
+}
+
+#menu a:hover {
+    font-weight: bold;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    #menu {
+        font-size: 16px;
+    }
+}
