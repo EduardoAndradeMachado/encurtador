@@ -1,0 +1,16 @@
+#shorten {
+    width: 400px;
+    gap: 24px;
+}
+
+#shorten img {
+    height: 60px;
+    width: auto;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    #shorten {
+        width: 340px;
+    }
+}
