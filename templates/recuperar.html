@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/pages/recuperar.css') }}" rel="stylesheet">
+    <title>Recuperar</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+
+    <main>
+        <section id="recover">
+            <a href="/">
+                <img src="{{ url_for('static', filename='assets/images/global/Logo.svg') }}" alt="logo">
+            </a>
+            <form action="/recuperar" method="post">
+                <input type="text" name="url" placeholder="Digite a url original" autocomplete="off" autofocus required>
+                <input type="submit" value="Recuperar URL">
+            </form>
+        </section>
+    </main>
+
+
+    {% include 'footer.html' %}
+</body>
+
+</html>
