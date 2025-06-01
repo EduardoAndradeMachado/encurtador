@@ -1,0 +1,16 @@
+#result {
+    width: 400px;
+    gap: 24px;
+}
+
+#result img {
+    height: 60px;
+    width: auto;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    #result {
+        width: 340px;
+    }
+}
