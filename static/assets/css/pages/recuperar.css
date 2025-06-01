@@ -1,0 +1,16 @@
+#recover {
+    width: 400px;
+    gap: 24px;
+}
+
+#recover img {
+    height: 60px;
+    width: auto;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    #recover {
+        width: 340px;
+    }
+}
