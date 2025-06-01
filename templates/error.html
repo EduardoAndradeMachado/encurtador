@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/pages/error.css') }}" rel="stylesheet">
+    <title>Error</title>
+</head>
+
+<body>
+    <main>
+        <section id="error">
+            <div id="error-message">
+                <h1> Ocorreu um erro: </h2>
+                <h4> {{error}} </h3>
+            </div>
+            <a class="btn" href="/">Retornar para o ínicio</a>
+        </section>
+    </main>
+</body>
+
+</html>
