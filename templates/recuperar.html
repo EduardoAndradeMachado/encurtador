@@ -5,11 +5,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/pages/recuperar.css') }}" rel="stylesheet">
     <!-- Favicon para tema claro -->
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}" media="(prefers-color-scheme: light)">
     <!-- Favicon para tema escuro -->
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}" media="(prefers-color-scheme: dark)">
+    <!-- Espefico da página -->
+    <link href="{{ url_for('static', filename='assets/css/pages/recuperar.css') }}" rel="stylesheet">
     <title>Recuperar</title>
 </head>
 
@@ -20,7 +21,7 @@
     <main>
         <section id="recover">
             <a href="/">
-                <img src="{{ url_for('static', filename='assets/images/global/Logo.svg') }}" alt="logo">
+                <img src="{{ url_for('static', filename='assets/images/global/logo.svg') }}" alt="logo">
             </a>
             <form action="/recuperar" method="post">
                 <input type="text" name="url" placeholder="Digite a url original" autocomplete="off" autofocus required>

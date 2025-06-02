@@ -5,12 +5,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='assets/js/copiar.js') }}"></script>
     <!-- Favicon para tema claro -->
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}" media="(prefers-color-scheme: light)">
     <!-- Favicon para tema escuro -->
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}" media="(prefers-color-scheme: dark)">
+    <!-- Espefico da página -->
+    <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='assets/js/copiar.js') }}"></script>
     <title>Recuperar</title>
 </head>
 
@@ -21,7 +22,7 @@
     <main class="grid">
         <section id="result">
             <a href="/">
-                <img src="{{ url_for('static', filename='assets/images/global/Logo.svg') }}" alt="logo">
+                <img src="{{ url_for('static', filename='assets/images/global/logo.svg') }}" alt="logo">
             </a>
             <form>
                 <input type="text" name="short_url" autocomplete="off" autofocus disabled="on" value="{{short_url}}">

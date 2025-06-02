@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}" media="(prefers-color-scheme: light)">
     <!-- Favicon para tema escuro -->
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}" media="(prefers-color-scheme: dark)">
+    <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/home.css') }}" rel="stylesheet">
     <title>Home</title>
 </head>
@@ -20,7 +21,7 @@
     <main>
         <section id="shorten">
             <a href="/">
-                <img src="{{ url_for('static', filename='assets/images/global/Logo.svg') }}" alt="logo">
+                <img src="{{ url_for('static', filename='assets/images/global/logo.svg') }}" alt="logo">
             </a>
             <form action="/" method="post">
                 <input type="text" name="url" placeholder="Digite a url" autocomplete="off" autofocus required>
