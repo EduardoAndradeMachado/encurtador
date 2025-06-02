@@ -2,7 +2,7 @@ import validators
 import random
 import string
 import sqlite3
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 
 # Configure application
 app = Flask(__name__)
@@ -88,7 +88,7 @@ def resultado():
     if not slug:
         return redirect("/")
 
-    short_url = f'http://127.0.0.1:5000/{slug}'
+    short_url = url_for('redirecionamento', slug=slug, _external=True)
 
     try:
         conn = get_connection()
