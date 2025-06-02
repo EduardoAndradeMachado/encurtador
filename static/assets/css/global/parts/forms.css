@@ -15,7 +15,7 @@ input {
     border: none;
 }
 
-input[type="text"] {
+input[type="text"],input[type="url"], input[type="date"] {
     background: var(--color-cinza-claro);
     border: 1px solid var(--color-cinza-medio);
     color: var(--color-preto);
@@ -30,4 +30,13 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background: var(--color-azul-piscina-hover);
     color: var(--color-branco);
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+input[type="checkbox"] {
+    accent-color: var(--color-azul-piscina);
 }

@@ -20,12 +20,26 @@
             </a>
             <form action="/" method="post">
                 <input type="text" name="url" placeholder="Digite a url" autocomplete="off" autofocus required>
+                <div id="options" class="hidden">
+                    <b>Opcionais:</b>
+                    <label><input type="checkbox" name="qrcode">Gerar qrCode</label>
+                    <label><input type="checkbox" name="select-custom-url">Personalizar URL</label>
+                    <label><input type="checkbox" name="qrcode">Definir data de expiração</label>
+                </div>
                 <input type="submit" value="Encurtar">
+                <div id="custom-url-block" class="hidden">
+                    <p>Defina sua url personalizada</p>
+                    <input type="text" name="custom-url" autocomplete="off" value="https://127.0.0.1:5000/">
+                </div>
+                <div id="date-block" class="hidden">
+                    <p>Data de expiração</p>
+                    <input type="date" name="date" placeholder="Digite a url" autocomplete="off">
+                </div>
             </form>
         </section>
     </main>
 
-    
+
     {% include 'footer.html' %}
 </body>
 

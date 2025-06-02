@@ -39,6 +39,10 @@ main {
     align-items: center;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .grid {
     width: 1280px;
     display: flex;

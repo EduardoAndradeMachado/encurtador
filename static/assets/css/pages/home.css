@@ -8,6 +8,32 @@
     width: auto;
 }
 
+#options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+#options label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+#shorten form div {
+    width: 100%;
+    text-align: center;
+}
+
+#options b {
+    margin-top: 10px;
+}
+
 /* Mobile */
 @media (max-width: 767px) {
     #shorten {
