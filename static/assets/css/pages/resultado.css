@@ -8,6 +8,41 @@
     width: auto;
 }
 
+#options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+#options label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+#options b {
+    margin-top: 10px;
+}
+
+#block-qrcode{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+#block-qrcode img, #block-qrcode canvas {
+    width: 300px !important;
+    height: auto !important;
+}
+
+
 /* Mobile */
 @media (max-width: 767px) {
     #result {
