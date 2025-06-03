@@ -71,14 +71,10 @@ def render_error(message, codigo):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        recived_url = request.form.get("url")
-        if not recived_url:
-            return render_template("error.html", error="Um campo não foi preenchido."), 400
-        
-        formated_url = formata_url(recived_url)
-
-        if not validators.url(formated_url):
-            return render_template("error.html", error="A url digitada é inválida"), 400
+        # Valida de recebeu uma url, formata com http/https e verifica se é valida
+        formated_url = valida_formata_url(request.form.get("url"))
+        if not formated_url:
+            return render_error("A URL digitada é inválida.", 400)
 
         while(True):
             conn = None
@@ -157,16 +153,13 @@ def resultado():
 @app.route("/recuperar", methods=["GET", "POST"])
 def recuperar():
     if request.method == "POST":
-        recived_url = request.form.get("url")
-        if not recived_url:
-            return render_template("error.html", error="Um campo não foi preenchido."), 400
-        
-        recived_url = formata_url(recived_url)
-
-        if not validators.url(recived_url):
-            return render_template("error.html", error="A url digitada é inválida."), 400
-        
-        short_slug = get_slug_from_log_url(recived_url)
+        # Valida de recebeu uma url, formata com http/https e verifica se é valida
+        formated_url = valida_formata_url(request.form.get("url"))
+        if not formated_url:
+            return render_error("A URL digitada é inválida.", 400)
+    
+        # Busca no banco de dados a slug com base na url longa
+        short_slug = get_slug_from_log_url(formated_url)
         if not short_slug:
             return render_error("A URL digitada não foi encontrada.", 400)
 
