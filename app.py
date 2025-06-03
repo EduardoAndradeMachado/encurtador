@@ -269,7 +269,6 @@ def update_log():
     finally:
         if conn:
             conn.close()
-
     return jsonify({"status": "ok"}), 200
 
 
