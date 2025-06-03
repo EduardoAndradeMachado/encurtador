@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
     <!-- Favicon para tema claro -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}"
+        media="(prefers-color-scheme: light)">
     <!-- Favicon para tema escuro -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}"
+        media="(prefers-color-scheme: dark)">
     <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='assets/js/copiar.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/pages/resultados/copiar.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/pages/resultados/qrcode.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
     <title>Recuperar</title>
 </head>
 
@@ -28,7 +33,21 @@
                 <input type="text" name="short_url" autocomplete="off" autofocus disabled="on" value="{{short_url}}">
                 <input type="submit" value="Copiar">
                 <p><b>{{clicks}}</b> acessos nesse link.</p>
+
             </form>
+            <div id="options">
+                <b>Opções extras:</b>
+                <label><input class="option" type="checkbox" name="select-qrcode">Gerar QRcode</label>
+                <label class="hidden"><input class="option" type="checkbox" name="select-history">Exibir histórico de acessos avançado</label>
+            </div>
+            <div id="block-qrcode" class="hidden">
+                <b>QRcode</b>
+                <div id="qrcode"></div>
+            </div>
+            <div id="block-history" class="hidden">
+                <b>Histórico avançado:</b>
+                <p>Em breve<br><br><br><br><br></p>
+            </div>
         </section>
     </main>
 
