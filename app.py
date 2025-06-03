@@ -62,7 +62,11 @@ def get_slug_from_log_url(url_longa):
 
 @app.errorhandler(500)
 def erro_interno(error):
-    return render_template("error.html", error="Erro interno no servidor."), 500
+    return render_error("Erro interno no servidor.", 500)
+
+def render_error(message, codigo):
+    return render_template("error.html", error=message), codigo
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -99,13 +103,13 @@ def index():
                 elif "url_longa" in error_message:
                     short_slug = get_slug_from_log_url(formated_url)
                     if not short_slug:
-                        return render_template("error.html", error="Erro interno no servidor."), 500
+                        return render_error("Erro interno no servidor.", 500)
                     break
                 else:
-                    return render_template("error.html", error="Erro interno no servidor."), 500
+                    return render_error("Erro interno no servidor.", 500)                    
                 
             except Exception as e:
-                return render_template("error.html", error="Erro interno no servidor."), 500
+                return render_error("Erro interno no servidor.", 500)
             
             else:
                 break
@@ -138,10 +142,10 @@ def resultado():
         if clicks:
             clicks = clicks['clicks']
         else:
-            return render_template("error.html", error="A url digitada não foi encontrada."), 400
+            return render_error("A url digitada não foi encontrada.", 400)
         
     except Exception as e:
-        return render_template("error.html", error="Erro interno no servidor."), 500
+        return render_error("Erro interno no servidor.", 500)
 
     finally:
         if conn:
@@ -164,7 +168,7 @@ def recuperar():
         
         short_slug = get_slug_from_log_url(recived_url)
         if not short_slug:
-            return render_template("error.html", error="A URL digitada não foi encontrada."), 400
+            return render_error("A URL digitada não foi encontrada.", 400)
 
         return redirect(f"/resultado?short_slug={short_slug}")
     
@@ -186,10 +190,10 @@ def redirecionamento(slug):
             cursor.execute("UPDATE urls SET clicks = clicks + 1 WHERE slug = ?;", (slug,))
             conn.commit()
         else:
-            return render_template("error.html", error="Página não encontrada."), 404
+            return render_error("Página não encontrada.", 404)
         
     except Exception as e:
-        return render_template("error.html", error="Erro interno no servidor."), 500
+        return render_error("Erro interno no servidor.", 500)
 
     finally:
         if conn:
