@@ -25,6 +25,27 @@ def formata_url(url):
         url = url[:-1] 
     return url
 
+def get_slug_from_log_url(url_longa):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT slug FROM urls WHERE url_longa = ?;", (url_longa,))
+        slug = cursor.fetchone()
+        if slug:
+            slug = slug['slug']
+        else:
+            slug = None
+        
+    except Exception as e:
+        return render_template("error.html", error="Erro interno no servidor."), 500
+
+    finally:
+        if conn:
+            conn.close()
+
+    return slug
+
 @app.errorhandler(500)
 def erro_interno(error):
     return render_template("error.html", error="Erro interno no servidor."), 500
