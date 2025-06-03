@@ -15,8 +15,9 @@ def get_connection():
 
 def gerar_slug():
     tamanho_slug = 5
-    short_slug = ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
-    return short_slug
+    # Gera 5 caracteres aleatórios contendo letras maiusculas, minusculas e numeros.
+    randon_slug = ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
+    return randon_slug
 
 def formata_url(url):
     if not url.startswith(('http://', 'https://')):
