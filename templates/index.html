@@ -11,6 +11,7 @@
     <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}" media="(prefers-color-scheme: dark)">
     <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/home.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='assets/js/pages/home/options.js') }}"></script>
     <title>Home</title>
 </head>
 
@@ -25,16 +26,15 @@
             </a>
             <form action="/" method="post">
                 <input type="text" name="url" placeholder="Digite a url" autocomplete="off" autofocus required>
-                <div id="options" class="hidden">
+                <div id="options">
                     <b>Opcionais:</b>
-                    <label><input type="checkbox" name="qrcode">Gerar qrCode</label>
-                    <label><input type="checkbox" name="select-custom-url">Personalizar URL</label>
-                    <label><input type="checkbox" name="qrcode">Definir data de expiração</label>
+                    <label><input class="option" type="checkbox" name="select-custom-url">Personalizar URL</label>
+                    <label class="hidden"><input class="option" type="checkbox" name="select-date">Definir data de expiração</label>
                 </div>
                 <input type="submit" value="Encurtar">
                 <div id="custom-url-block" class="hidden">
-                    <p>Defina sua url personalizada</p>
-                    <input type="text" name="custom-url" autocomplete="off" value="https://127.0.0.1:5000/">
+                    <p>Defina sua slug personalizada</p>
+                    <input type="text" name="custom-url" autocomplete="off" value="" maxlength="24">
                 </div>
                 <div id="date-block" class="hidden">
                     <p>Data de expiração</p>
