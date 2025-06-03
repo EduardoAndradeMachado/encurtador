@@ -107,6 +107,8 @@ def index():
     - POST: processa a URL enviada, gera slug única e salva no banco
     """
     if request.method == "POST":
+        option_custom_url = request.form.get("select-custom-url")
+        option_expiration_date = request.form.get("select-date")
         # Valida e normaliza a URL recebida do formulário
         formated_url = valida_normaliza_url(request.form.get("url"))
         if not formated_url:
@@ -116,7 +118,21 @@ def index():
         for _ in range(10):
             conn = None
             try:
-                short_slug = gerar_slug()
+                if option_custom_url == 'on':
+                    short_slug = request.form.get("custom-url")
+                    if not short_slug:
+                        return render_error("URL customizada não informada.", 400)
+                    
+                    if re.search(r'[^a-z0-9-]', short_slug):
+                        return render_error("Caracter inválido na url.", 400)
+                    
+                    if len(short_slug) > 30:
+                        return render_error("Slug escolhida é muito longa.", 400)
+                    # Adicionar após front ser aprimorado.
+                    # if not short_slug.startswith(request.url_root):
+                    #     return render_error("URL customizada informada é inválida.", 400)
+                else:
+                    short_slug = gerar_slug()
 
                 conn = get_connection()
                 cursor = conn.cursor()
@@ -198,7 +214,7 @@ def resultado():
     return render_template("resultado.html", short_url=short_url, clicks=clicks)
 
 
-@app.route("/recuperar", methods=["GET", "POST"])
+@app.route("/recuperar", methods=["GET", "POST"], strict_slashes=False)
 def recuperar():
     """
     Permite ao usuário recuperar a slug de uma URL longa já cadastrada.
