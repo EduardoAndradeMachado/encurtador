@@ -83,7 +83,10 @@ def index():
                     print('Slug já existe, gerando uma nova...')
                     continue
                 elif "url_longa" in error_message:
-                    return render_template("error.html", error="A url digitada ja foi encurtada anteriomente."), 400
+                    short_slug = get_slug_from_log_url(formated_url)
+                    if not short_slug:
+                        return render_template("error.html", error="Erro interno no servidor."), 500
+                    break
                 else:
                     return render_template("error.html", error="Erro interno no servidor."), 500
                 
