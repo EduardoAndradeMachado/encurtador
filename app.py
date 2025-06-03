@@ -76,7 +76,8 @@ def index():
         if not formated_url:
             return render_error("A URL digitada é inválida.", 400)
 
-        while(True):
+        # Tenta gerar uma slug única ate 10 vezes
+        for _ in range(10):
             conn = None
             try:
                 short_slug = gerar_slug()
@@ -113,6 +114,8 @@ def index():
             finally:
                 if conn:
                     conn.close()
+        else:
+            return render_error("Não foi possível gerar uma URL curta única.", 500)
 
         return redirect(f"/resultado?short_slug={short_slug}")
     else:
