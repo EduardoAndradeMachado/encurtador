@@ -40,6 +40,7 @@ def valida_formata_url(received_url):
     return formated_url
 
 def get_slug_from_log_url(url_longa):
+    conn = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -77,6 +78,7 @@ def index():
             return render_template("error.html", error="A url digitada é inválida"), 400
 
         while(True):
+            conn = None
             try:
                 short_slug = gerar_slug()
 
@@ -127,6 +129,7 @@ def resultado():
 
     short_url = url_for('redirecionamento', slug=slug, _external=True)
 
+    conn = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -171,6 +174,7 @@ def recuperar():
 
 @app.route("/<slug>", methods=["GET"], strict_slashes=False)
 def redirecionamento(slug):
+    conn = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
