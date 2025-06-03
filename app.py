@@ -1,7 +1,8 @@
-import validators
+from urllib.parse import urlparse, urlunparse
 import random
 import string
 import sqlite3
+import re
 from flask import Flask, redirect, render_template, request, url_for
 
 # Configure application
@@ -18,21 +19,42 @@ def gerar_slug():
     # Gera 5 caracteres aleatórios contendo letras maiusculas, minusculas e numeros.
     return ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
 
-def valida_formata_url(received_url):
-    # Verifica se recebemos algum valor
+def valida_normaliza_url(received_url):
+    # 1) Checa se veio algo e remove espaços em branco (incluindo tabs e quebras de linha)
     if not received_url:
         return None
-    
-    # Forma o valor recebido para o formato de url
-    formated_url = received_url
-    if not received_url.startswith(('http://', 'https://')):
-        formated_url = 'https://' + received_url
+    received_url = re.sub(r"\s+", "", received_url)
 
-    # Valida se é uma url válida
-    if not validators.url(formated_url):
+     # 2) Se não tiver esquema, adiciona https://
+    if not received_url.startswith(('http://', 'https://')):
+        received_url = 'https://' + received_url
+    
+    # 3) Faz o parsing (quebra em pedaços)
+    parsed = urlparse(received_url)
+
+    # 4) Verifica se o esquema é http ou https e se há netloc (domínio)
+    if parsed.scheme.lower() not in ("http", "https") or not parsed.netloc:
         return None
     
-    return formated_url
+    # 5) Força o netloc todo em minúsculas
+    domain = parsed.netloc.lower()
+
+    #6 Verifica se o domínio é válido:
+    padrao = r"^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$"
+    if not re.match(padrao, domain):
+        return None
+
+    # 7) Reconstrói a URL sem alterar path/query/fragment
+    url_normalizada = urlunparse((
+        parsed.scheme.lower(),
+        domain,
+        parsed.path or "",
+        parsed.params,
+        parsed.query,
+        parsed.fragment
+    ))
+    
+    return url_normalizada
 
 def get_slug_from_long_url(url_longa):
     conn = None
@@ -68,7 +90,7 @@ def render_error(message, codigo):
 def index():
     if request.method == "POST":
         # Valida de recebeu uma url, formata com http/https e verifica se é valida
-        formated_url = valida_formata_url(request.form.get("url"))
+        formated_url = valida_normaliza_url(request.form.get("url"))
         if not formated_url:
             return render_error("A URL digitada é inválida.", 400)
 
@@ -153,7 +175,7 @@ def resultado():
 def recuperar():
     if request.method == "POST":
         # Valida de recebeu uma url, formata com http/https e verifica se é valida
-        formated_url = valida_formata_url(request.form.get("url"))
+        formated_url = valida_normaliza_url(request.form.get("url"))
         if not formated_url:
             return render_error("A URL digitada é inválida.", 400)
     
