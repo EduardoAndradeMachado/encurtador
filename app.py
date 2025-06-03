@@ -19,12 +19,25 @@ def gerar_slug():
     randon_slug = ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
     return randon_slug
 
-def formata_url(url):
-    if not url.startswith(('http://', 'https://')):
-        url = 'https://' + url
-    if url.endswith('/'):
-        url = url[:-1] 
-    return url
+def valida_formata_url(received_url):
+    # Verifica se recebemos algum valor
+    if not received_url:
+        return None
+    
+    # Forma o valor recebido para o formato de url
+    formated_url = received_url
+    if not received_url.startswith(('http://', 'https://')):
+        formated_url = 'https://' + received_url
+
+    # Normaliza o final da url desconsiderando a barra no final
+    if formated_url.endswith('/'):
+        formated_url = formated_url[:-1] 
+
+    # Valida se é uma url válida
+    if not validators.url(formated_url):
+        return None
+    
+    return formated_url
 
 def get_slug_from_log_url(url_longa):
     try:
