@@ -53,8 +53,7 @@ def get_slug_from_log_url(url_longa):
             slug = None
         
     except Exception as e:
-        return render_template("error.html", error="Erro interno no servidor."), 500
-
+        slug = None
     finally:
         if conn:
             conn.close()
