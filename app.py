@@ -57,11 +57,10 @@ def index():
         if not recived_url:
             return render_template("error.html", error="Um campo não foi preenchido."), 400
         
-        recived_url = formata_url(recived_url)
+        formated_url = formata_url(recived_url)
 
-        if not validators.url(recived_url):
+        if not validators.url(formated_url):
             return render_template("error.html", error="A url digitada é inválida"), 400
-
 
         while(True):
             try:
@@ -74,7 +73,7 @@ def index():
                     INSERT INTO urls (slug, url_longa)
                     VALUES (?, ?);
                 """
-                cursor.execute(query, (short_slug, recived_url))
+                cursor.execute(query, (short_slug, formated_url))
                 conn.commit()
 
             except sqlite3.IntegrityError as e:
