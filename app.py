@@ -5,18 +5,24 @@ import sqlite3
 import re
 from flask import Flask, redirect, render_template, request, url_for
 
-# Configure application
+# Configuração da aplicação Flask
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 def get_connection():
+    """
+    Cria e retorna uma conexão com o banco de dados SQLite.
+    Define o row_factory para acessar colunas por nome.
+    """
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     return conn
 
 def gerar_slug():
+    """
+    Gera uma string aleatória de 5 caracteres (letras e números) para ser usada como slug.
+    """
     tamanho_slug = 5
-    # Gera 5 caracteres aleatórios contendo letras maiusculas, minusculas e numeros.
     return ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
 
 def valida_normaliza_url(received_url):
@@ -57,19 +63,20 @@ def valida_normaliza_url(received_url):
     return url_normalizada
 
 def get_slug_from_long_url(url_longa):
+    """
+    Busca no banco de dados a slug correspondente a uma URL longa.
+    Retorna a slug ou None se não encontrada.
+    """
     conn = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        
-        # Receber a slug com base na url longa
         cursor.execute("SELECT slug FROM urls WHERE url_longa = ?;", (url_longa,))
         slug = cursor.fetchone()
         if slug:
             slug = slug['slug']
         else:
             slug = None
-        
     except Exception as e:
         slug = None
     finally:
@@ -80,21 +87,32 @@ def get_slug_from_long_url(url_longa):
 
 @app.errorhandler(500)
 def erro_interno(error):
+    """
+    Handler para erros 500 (erro interno do servidor).
+    """
     return render_error("Erro interno no servidor.", 500)
 
 def render_error(message, codigo):
+    """
+    Renderiza a página de erro com a mensagem e código HTTP especificados.
+    """
     return render_template("error.html", error=message), codigo
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    """
+    Rota principal:
+    - GET: exibe o formulário para encurtar URL
+    - POST: processa a URL enviada, gera slug única e salva no banco
+    """
     if request.method == "POST":
-        # Valida de recebeu uma url, formata com http/https e verifica se é valida
+        # Valida e normaliza a URL recebida do formulário
         formated_url = valida_normaliza_url(request.form.get("url"))
         if not formated_url:
             return render_error("A URL digitada é inválida.", 400)
 
-        # Tenta gerar uma slug única ate 10 vezes
+        # Tenta gerar uma slug única até 10 vezes
         for _ in range(10):
             conn = None
             try:
@@ -111,37 +129,49 @@ def index():
                 conn.commit()
 
             except sqlite3.IntegrityError as e:
+                # Trata erros de unicidade (slug ou url_longa já existem)
                 error_message = str(e).lower()
                 if "slug" in error_message:
                     print('Slug já existe, gerando uma nova...')
-                    continue
+                    continue  # Tenta novamente com outra slug
                 elif "url_longa" in error_message:
+                    # URL já cadastrada, busca a slug existente
                     short_slug = get_slug_from_long_url(formated_url)
                     if not short_slug:
                         return render_error("Erro interno no servidor.", 500)
+                    # Sucesso sai do loop
                     break
                 else:
                     return render_error("Erro interno no servidor.", 500)                    
                 
             except Exception as e:
+                # Outros erros inesperados
                 return render_error("Erro interno no servidor.", 500)
             
             else:
+                # Sucesso ao inserir, sai do loop
                 break
 
             finally:
                 if conn:
                     conn.close()
         else:
-            return render_error("Não foi possível gerar uma URL curta única.", 500)
+            # Não conseguiu gerar uma slug única após 10 tentativas
+            return render_error("Não foi possível gerar uma URL curta única, tente novamente.", 500)
 
+        # Redireciona para a página de resultado com a slug gerada
         return redirect(f"/resultado?short_slug={short_slug}")
     else:
+        # GET: exibe o formulário
         return render_template("index.html")
 
 
 @app.route("/resultado", methods=["GET"])
 def resultado():
+    """
+    Exibe o resultado da criação ou recuperação de uma URL curta.
+    Mostra a URL curta e o número de cliques.
+    """
     slug = request.args.get('short_slug')
 
     if not slug:
@@ -153,17 +183,14 @@ def resultado():
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        
         cursor.execute("SELECT clicks FROM urls WHERE slug = ?;", (slug,))
         clicks = cursor.fetchone()
         if clicks:
             clicks = clicks['clicks']
         else:
             return render_error("A url digitada não foi encontrada.", 400)
-        
     except Exception as e:
         return render_error("Erro interno no servidor.", 500)
-
     finally:
         if conn:
             conn.close()
@@ -173,13 +200,14 @@ def resultado():
 
 @app.route("/recuperar", methods=["GET", "POST"])
 def recuperar():
+    """
+    Permite ao usuário recuperar a slug de uma URL longa já cadastrada.
+    """
     if request.method == "POST":
-        # Valida de recebeu uma url, formata com http/https e verifica se é valida
         formated_url = valida_normaliza_url(request.form.get("url"))
         if not formated_url:
             return render_error("A URL digitada é inválida.", 400)
     
-        # Busca no banco de dados a slug com base na url longa
         short_slug = get_slug_from_long_url(formated_url)
         if not short_slug:
             return render_error("A URL digitada não foi encontrada.", 400)
@@ -191,26 +219,28 @@ def recuperar():
 
 @app.route("/<slug>", methods=["GET"], strict_slashes=False)
 def redirecionamento(slug):
+    """
+    Rota de redirecionamento:
+    - Busca a URL longa correspondente à slug
+    - Incrementa o contador de cliques
+    - Redireciona o usuário para a URL longa
+    """
     conn = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        
-        # Puxa a url longa com base na slug
         cursor.execute("SELECT url_longa FROM urls WHERE slug = ?;", (slug,))
         url_longa = cursor.fetchone()
         if url_longa:
             url_longa = url_longa['url_longa']
 
-            # Adicionar mais um click no histórico
+            # Incrementa o contador de cliques
             cursor.execute("UPDATE urls SET clicks = clicks + 1 WHERE slug = ?;", (slug,))
             conn.commit()
         else:
             return render_error("Página não encontrada.", 404)
-        
     except Exception as e:
         return render_error("Erro interno no servidor.", 500)
-
     finally:
         if conn:
             conn.close()
@@ -219,4 +249,5 @@ def redirecionamento(slug):
 
 
 if __name__ == "__main__":
+    # Inicia o servidor Flask em modo debug
     app.run(debug=True)
