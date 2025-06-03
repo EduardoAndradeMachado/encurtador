@@ -28,10 +28,6 @@ def valida_formata_url(received_url):
     if not received_url.startswith(('http://', 'https://')):
         formated_url = 'https://' + received_url
 
-    # Normaliza o final da url desconsiderando a barra no final
-    if formated_url.endswith('/'):
-        formated_url = formated_url[:-1] 
-
     # Valida se é uma url válida
     if not validators.url(formated_url):
         return None
