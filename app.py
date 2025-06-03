@@ -3,7 +3,7 @@ import random
 import string
 import sqlite3
 import re
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, jsonify
 
 # Configuração da aplicação Flask
 app = Flask(__name__)
@@ -232,6 +232,46 @@ def recuperar():
     
     return render_template("recuperar.html")
 
+@app.route("/log", methods=["POST"], strict_slashes=False)
+def update_log():
+    dados = request.get_json()
+
+    url_id = dados.get('url_id')
+    user_agent = dados.get('user_agent')
+    largura_tela = dados.get('largura_tela')
+    altura_tela = dados.get('altura_tela')
+    idioma = dados.get('idioma')
+    ip = request.remote_addr
+    # Alterar localidade por idioma no banco de dados
+
+    if not url_id:
+        return jsonify({"status": "error"}), 500
+
+    conn = None
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Valida se o id existe na lista de urls
+        cursor.execute("SELECT slug FROM urls WHERE id = ?;", (url_id,))
+        if not cursor.fetchone():
+            return jsonify({"status": "error"}), 500
+
+        # Inserir dados
+        query = """
+            INSERT INTO logs (url_id, ip, user_agent, largura_tela, altura_tela, idioma)
+            VALUES (?, ?, ?, ?, ?, ?);
+        """
+        cursor.execute(query, (url_id, ip, user_agent, largura_tela, altura_tela, idioma))
+        conn.commit()
+    except:
+        return jsonify({"status": "error"}), 500
+    finally:
+        if conn:
+            conn.close()
+
+    return jsonify({"status": "ok"}), 200
+
 
 @app.route("/<slug>", methods=["GET"], strict_slashes=False)
 def redirecionamento(slug):
@@ -245,11 +285,11 @@ def redirecionamento(slug):
     try:
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT url_longa FROM urls WHERE slug = ?;", (slug,))
-        url_longa = cursor.fetchone()
-        if url_longa:
-            url_longa = url_longa['url_longa']
-
+        cursor.execute("SELECT url_longa, id FROM urls WHERE slug = ?;", (slug,))
+        data_recive = cursor.fetchone()
+        if data_recive:
+            url_longa = data_recive['url_longa']
+            url_id = data_recive['id']
             # Incrementa o contador de cliques
             cursor.execute("UPDATE urls SET clicks = clicks + 1 WHERE slug = ?;", (slug,))
             conn.commit()
@@ -261,7 +301,8 @@ def redirecionamento(slug):
         if conn:
             conn.close()
 
-    return redirect(url_longa)
+    # return redirect(url_longa)
+    return render_template("redirect.html", url=url_longa, url_id=url_id)
 
 
 if __name__ == "__main__":

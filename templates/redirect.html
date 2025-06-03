@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
+    <!-- Favicon para tema claro -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}"
+        media="(prefers-color-scheme: light)">
+    <!-- Favicon para tema escuro -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}"
+        media="(prefers-color-scheme: dark)">
+    <!-- Espefico da página -->
+    <link href="{{ url_for('static', filename='assets/css/pages/redirect.css') }}" rel="stylesheet">
+    <title>Redirecionando...</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <main>
+        <section id="redirect">
+            <h1> Você está sendo redirecionado para outra página! </h1>
+        </section>
+
+        <!-- Script para capturar informações do navegador e redirecionar -->
+        <script>
+            // Função que será executada assim que a página carregar
+            window.onload = function () {
+                // Captura informações do navegador
+                const userAgent = navigator.userAgent; // Navegador e sistema operacional
+                const larguraTela = window.screen.width; // Largura da tela
+                const alturaTela = window.screen.height; // Altura da tela
+                const idioma = navigator.language || navigator.userLanguage; // Idioma do navegador
+
+                // Monta um objeto com os dados
+                const dados = {
+                    url_id: "{{ url_id }}", // Passado pelo Flask
+                    user_agent: userAgent,
+                    largura_tela: larguraTela,
+                    altura_tela: alturaTela,
+                    idioma: idioma
+                };
+
+                // Envia os dados para o backend usando fetch (POST)
+                fetch("/log", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Após salvar os dados, redireciona o usuário
+                        window.location.href = "{{ url }}";
+                    })
+                    .catch(error => {
+                        // Se der erro, ainda assim redireciona
+                        window.location.href = "{{ url }}";
+                    });
+            };
+        </script>
+    </main>
+
+    {% include 'footer.html' %}
+</body>
+
+</html>
