@@ -39,7 +39,7 @@ def valida_formata_url(received_url):
     
     return formated_url
 
-def get_slug_from_log_url(url_longa):
+def get_slug_from_long_url(url_longa):
     conn = None
     try:
         conn = get_connection()
@@ -98,7 +98,7 @@ def index():
                     print('Slug já existe, gerando uma nova...')
                     continue
                 elif "url_longa" in error_message:
-                    short_slug = get_slug_from_log_url(formated_url)
+                    short_slug = get_slug_from_long_url(formated_url)
                     if not short_slug:
                         return render_error("Erro interno no servidor.", 500)
                     break
@@ -160,7 +160,7 @@ def recuperar():
             return render_error("A URL digitada é inválida.", 400)
     
         # Busca no banco de dados a slug com base na url longa
-        short_slug = get_slug_from_log_url(formated_url)
+        short_slug = get_slug_from_long_url(formated_url)
         if not short_slug:
             return render_error("A URL digitada não foi encontrada.", 400)
 
