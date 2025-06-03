@@ -33,7 +33,22 @@ Crie um arquivo database.db com a seguinte estrutura:
     url_longa TEXT UNIQUE NOT NULL,
     clicks INTEGER DEFAULT 0
     );
+
+   CREATE TABLE logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url_id INTEGER NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ip TEXT,
+    user_agent TEXT,
+    dispositivo TEXT,
+    largura_tela INTEGER,
+    altura_tela INTEGER,
+    localidade TEXT,
+    idioma TEXT,
+    FOREIGN KEY (url_id) REFERENCES urls(id)
+   );
    ```
+
 4. **Execute o projeto:**
    ```bash
    python app.py
