@@ -146,23 +146,9 @@ def recuperar():
         if not validators.url(recived_url):
             return render_template("error.html", error="A url digitada é inválida."), 400
         
-        try:
-            conn = get_connection()
-            cursor = conn.cursor()
-            
-            cursor.execute("SELECT slug FROM urls WHERE url_longa = ?;", (recived_url,))
-            short_slug = cursor.fetchone()
-            if short_slug:
-                short_slug = short_slug['slug']
-            else:
-                return render_template("error.html", error="A URL digitada é inválida."), 400
-            
-        except Exception as e:
-            return render_template("error.html", error="Erro interno no servidor."), 500
-
-        finally:
-            if conn:
-                conn.close()
+        short_slug = get_slug_from_log_url(recived_url)
+        if not short_slug:
+            return render_template("error.html", error="A URL digitada não foi encontrada."), 400
 
         return redirect(f"/resultado?short_slug={short_slug}")
     
