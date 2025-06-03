@@ -16,8 +16,7 @@ def get_connection():
 def gerar_slug():
     tamanho_slug = 5
     # Gera 5 caracteres aleatórios contendo letras maiusculas, minusculas e numeros.
-    randon_slug = ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
-    return randon_slug
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=tamanho_slug))
 
 def valida_formata_url(received_url):
     # Verifica se recebemos algum valor
