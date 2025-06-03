@@ -45,6 +45,7 @@ def get_slug_from_log_url(url_longa):
         conn = get_connection()
         cursor = conn.cursor()
         
+        # Receber a slug com base na url longa
         cursor.execute("SELECT slug FROM urls WHERE url_longa = ?;", (url_longa,))
         slug = cursor.fetchone()
         if slug:
@@ -175,11 +176,13 @@ def redirecionamento(slug):
         conn = get_connection()
         cursor = conn.cursor()
         
+        # Puxa a url longa com base na slug
         cursor.execute("SELECT url_longa FROM urls WHERE slug = ?;", (slug,))
         url_longa = cursor.fetchone()
         if url_longa:
             url_longa = url_longa['url_longa']
 
+            # Adicionar mais um click no histórico
             cursor.execute("UPDATE urls SET clicks = clicks + 1 WHERE slug = ?;", (slug,))
             conn.commit()
         else:
