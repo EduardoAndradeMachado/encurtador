@@ -242,7 +242,6 @@ def update_log():
     altura_tela = dados.get('altura_tela')
     idioma = dados.get('idioma')
     ip = request.remote_addr
-    # Alterar localidade por idioma no banco de dados
 
     if not url_id:
         return jsonify({"status": "error"}), 500
@@ -300,7 +299,6 @@ def redirecionamento(slug):
         if conn:
             conn.close()
 
-    # return redirect(url_longa)
     return render_template("redirect.html", url=url_longa, url_id=url_id)
 
 
