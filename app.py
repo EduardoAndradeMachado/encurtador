@@ -4,6 +4,7 @@ import string
 import sqlite3
 import re
 from flask import Flask, redirect, render_template, request, url_for, jsonify
+from device_detector import DeviceDetector
 
 # Configuração da aplicação Flask
 app = Flask(__name__)
@@ -243,8 +244,9 @@ def update_log():
     idioma = dados.get('idioma')
     ip = request.remote_addr
 
-    if not url_id:
-        return jsonify({"status": "error"}), 500
+        if user_agent:
+            dispositivo = DeviceDetector(user_agent).parse()
+            dispositivo = f"{dispositivo.device_type()} - {dispositivo.os_name()}"
 
     conn = None
     try:
