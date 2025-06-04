@@ -14,7 +14,7 @@
     <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='assets/js/pages/resultados/copiar.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/pages/resultados/qrcode.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/pages/resultados/options.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 
     <title>Recuperar</title>
@@ -38,16 +38,33 @@
             <div id="options">
                 <b>Opções extras:</b>
                 <label><input class="option" type="checkbox" name="select-qrcode">Gerar QRcode</label>
-                <label class="hidden"><input class="option" type="checkbox" name="select-history">Exibir histórico de acessos avançado</label>
+                <label><input class="option" type="checkbox" name="select-history">Exibir histórico de acessos
+                    avançado</label>
             </div>
-            <div id="block-qrcode" class="hidden">
-                <b>QRcode</b>
-                <div id="qrcode"></div>
-            </div>
-            <div id="block-history" class="hidden">
-                <b>Histórico avançado:</b>
-                <p>Em breve<br><br><br><br><br></p>
-            </div>
+        </section>
+        <section id="block-qrcode" class="hidden">
+            <b>QRcode</b>
+            <div id="qrcode"></div>
+        </section>
+        <section id="block-history" class="hidden">
+            <b>Histórico avançado:</b>
+            <table id="table-logs">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Dispositivo</th>
+                        <th>Altura da tela</th>
+                        <th>Largura da tela</th>
+                        <th>Idioma do navegador</th>
+                        <!-- <th>Localidade</th> -->
+                        <!-- <th>IP</th> -->
+                        <!-- <th>User Agent</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         </section>
     </main>
 
