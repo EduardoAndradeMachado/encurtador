@@ -233,44 +233,104 @@ def recuperar():
     
     return render_template("recuperar.html")
 
-@app.route("/log", methods=["POST"], strict_slashes=False)
-def update_log():
-    dados = request.get_json()
+@app.route("/log", methods=["GET", "POST"], strict_slashes=False)
+def log():
+    if request.method == "POST":
+        """
+        Adiciona dados do usuário no log
+        """
+        dados = request.get_json()
 
-    url_id = dados.get('url_id')
-    user_agent = dados.get('user_agent')
-    largura_tela = dados.get('largura_tela')
-    altura_tela = dados.get('altura_tela')
-    idioma = dados.get('idioma')
-    ip = request.remote_addr
+        url_id = dados.get('url_id')
+        user_agent = dados.get('user_agent')
+        largura_tela = dados.get('largura_tela')
+        altura_tela = dados.get('altura_tela')
+        idioma = dados.get('idioma')
+        ip = request.remote_addr
+        dispositivo = None
 
+        if not url_id:
+            return jsonify({"status": "error",
+                            "message": "url_id não informada"}), 400
+        
         if user_agent:
             dispositivo = DeviceDetector(user_agent).parse()
             dispositivo = f"{dispositivo.device_type()} - {dispositivo.os_name()}"
 
-    conn = None
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
+        conn = None
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
 
-        # Valida se o id existe na lista de urls
-        cursor.execute("SELECT slug FROM urls WHERE id = ?;", (url_id,))
-        if not cursor.fetchone():
-            return jsonify({"status": "error"}), 500
+            # Valida se o id existe na lista de urls
+            cursor.execute("SELECT slug FROM urls WHERE id = ?;", (url_id,))
+            if not cursor.fetchone():
+                return jsonify({"status": "error",
+                            "message": "Slug não encontrada."}), 404
 
-        # Inserir dados
-        query = """
-            INSERT INTO logs (url_id, ip, user_agent, largura_tela, altura_tela, idioma)
-            VALUES (?, ?, ?, ?, ?, ?);
+            # Inserir dados
+            query = """
+                INSERT INTO logs (url_id, ip, user_agent, largura_tela, altura_tela, idioma, dispositivo)
+                VALUES (?, ?, ?, ?, ?, ?, ?);
+            """
+            cursor.execute(query, (url_id, ip, user_agent, largura_tela, altura_tela, idioma, dispositivo))
+            conn.commit()
+        except:
+            return jsonify({"status": "error",
+                            "message": "Erro interno no servidor."}), 500
+        finally:
+            if conn:
+                conn.close()
+        return jsonify({"status": "ok"}), 200
+    elif request.method == "GET":
         """
-        cursor.execute(query, (url_id, ip, user_agent, largura_tela, altura_tela, idioma))
-        conn.commit()
-    except:
-        return jsonify({"status": "error"}), 500
-    finally:
-        if conn:
-            conn.close()
-    return jsonify({"status": "ok"}), 200
+        Encontra o id com base na slug, em seguida puxa o histórico de acessos detalhado.
+        """
+        short_slug = request.args.get('short_slug')
+        if not short_slug:
+            return jsonify({"status": "error",
+                            "message": "Slug curta não informada"}), 400
+
+        conn = None
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT id FROM urls WHERE slug = ?;", (short_slug, ))
+            url_id = cursor.fetchone()
+            if not url_id:
+                return jsonify({"status": "error",
+                                "message": "ID não encontrado"}), 404
+            else:
+                url_id = url_id['id']
+
+            cursor.execute("SELECT * FROM logs WHERE url_id = ? ORDER BY date DESC;", (url_id, ))
+            logs = cursor.fetchall()
+            if not logs:
+                return jsonify({"status": "error",
+                                "message": "Logs não encontrados"}), 404
+            
+            logs_dict = []
+            for log in logs:
+                logs_dict.append({
+                    "ip": log["ip"],
+                    "user_agent": log["user_agent"],
+                    "largura_tela": log["largura_tela"],
+                    "altura_tela": log["altura_tela"],
+                    "idioma": log["idioma"],
+                    "localidade": log["localidade"],
+                    "date": log["date"],
+                    "dispositivo": log["dispositivo"]
+                })
+
+            # logs_dict = [dict(log) for log in logs] # Retorna todas colunas (pode vir a ser util)
+        except:
+            return jsonify({"status": "error",
+                            "message": "Erro interno no servidor."}), 500
+        finally:
+            if conn:
+                conn.close()
+        return jsonify(logs_dict), 200
 
 
 @app.route("/<slug>", methods=["GET"], strict_slashes=False)
