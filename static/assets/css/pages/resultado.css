@@ -56,7 +56,6 @@ main {
     max-width: 600px;
     max-height: 340px;
     overflow: scroll;
-    
 }
 
 #table-logs {
@@ -70,14 +69,11 @@ main {
     color: var(--color-branco);
 }
 
-#table-logs td {
-    min-width: 85px;
-}
-
 #table-logs th,
 #table-logs td {
     padding: 12px;
     text-align: left;
+    min-width: 85px;
 }
 
 #table-logs tbody tr:nth-child(even) {
@@ -95,4 +91,8 @@ main {
     #result {
         width: 340px;
     }
+
+    #block-history {
+    max-width: 100%;
+}
 }
