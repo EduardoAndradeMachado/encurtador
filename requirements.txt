@@ -1,2 +1,3 @@
 flask
 validators
+device_detector
