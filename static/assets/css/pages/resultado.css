@@ -1,3 +1,7 @@
+main {
+    gap: 40px;
+}
+
 #result {
     width: 400px;
     gap: 24px;
@@ -29,7 +33,7 @@
     margin-top: 10px;
 }
 
-#block-qrcode{
+#block-qrcode {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -37,9 +41,52 @@
     text-align: center;
 }
 
-#block-qrcode img, #block-qrcode canvas {
+#block-qrcode img,
+#block-qrcode canvas {
     width: 300px !important;
     height: auto !important;
+    max-height: 400px;
+}
+
+#block-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 600px;
+    max-height: 340px;
+    overflow: scroll;
+    
+}
+
+#table-logs {
+    width: 100%;
+    border: 1px solid var(--color-cinza-medio);
+    font-size: 16px;
+}
+
+#table-logs thead tr {
+    background-color: var(--color-azul-piscina);
+    color: var(--color-branco);
+}
+
+#table-logs td {
+    min-width: 85px;
+}
+
+#table-logs th,
+#table-logs td {
+    padding: 12px;
+    text-align: left;
+}
+
+#table-logs tbody tr:nth-child(even) {
+    background-color: var(--color-cinza-claro);
+    border: 1px solid var(--color-cinza-medio);
+}
+
+#table-logs tbody tr:nth-child(odd) {
+    background-color: var(--color-branco);
 }
 
 
