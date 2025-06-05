@@ -235,6 +235,11 @@ def recuperar():
 
 @app.route("/log", methods=["GET", "POST"], strict_slashes=False)
 def log():
+    """
+    Rota para gerenciar logs de acesso:
+    - POST: Adiciona dados do usuário no log
+    - GET: Recupera histórico de acessos detalhado com base na slug
+    """
     if request.method == "POST":
         """
         Adiciona dados do usuário no log

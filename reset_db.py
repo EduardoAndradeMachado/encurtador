@@ -1,5 +1,6 @@
 import sqlite3
 
+# Função para resetar o banco de dados
 def reset_db():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Adiciona evento para manipular opções do formulário principal (personalizar URL e data de expiração)
+    // Alterna a visibilidade dos campos extras e o atributo 'required' conforme seleção
     const options = document.querySelectorAll('#options .option')
     for (option of options) {
         option.addEventListener("click", (e) => {
