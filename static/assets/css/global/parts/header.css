@@ -14,6 +14,10 @@ header {
     padding: 24px 0px;
 }
 
+.menu-active {
+    font-weight: bold;
+}
+
 #menu a:hover {
     font-weight: bold;
 }
