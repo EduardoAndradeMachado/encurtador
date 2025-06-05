@@ -5,6 +5,7 @@ import sqlite3
 import re
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from device_detector import DeviceDetector
+import json
 
 # Configuração da aplicação Flask
 app = Flask(__name__)
@@ -244,7 +245,11 @@ def log():
         """
         Adiciona dados do usuário no log
         """
-        dados = request.get_json()
+        try: 
+            dados = json.loads(request.data.decode('utf-8'))
+        except:
+            return jsonify({"status": "error",
+                            "message": "Entrada inválida."}), 401
 
         url_id = dados.get('url_id')
         user_agent = dados.get('user_agent')

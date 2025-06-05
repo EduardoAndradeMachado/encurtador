@@ -26,41 +26,21 @@
 
         <!-- Script para capturar informações do navegador e redirecionar -->
         <script>
-            // Função que será executada assim que a página carregar
-            window.onload = function () {
-                // Captura informações do navegador
-                const userAgent = navigator.userAgent;
-                const larguraTela = window.screen.width;
-                const alturaTela = window.screen.height;
-                const idioma = navigator.language || navigator.userLanguage;
-
-                // Monta um objeto com os dados
+            document.addEventListener('DOMContentLoaded', function () {
                 const dados = {
                     url_id: "{{ url_id }}", // Passado pelo Flask
-                    user_agent: userAgent,
-                    largura_tela: larguraTela,
-                    altura_tela: alturaTela,
-                    idioma: idioma
+                    user_agent: navigator.userAgent,
+                    largura_tela: window.screen.width,
+                    altura_tela: window.screen.height,
+                    idioma: navigator.language || navigator.userLanguage
                 };
 
-                // Envia os dados para o backend usando fetch (POST)
-                fetch("/log", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(dados)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Após salvar os dados, redireciona o usuário
-                        window.location.href = "{{ url }}";
-                    })
-                    .catch(error => {
-                        // Se der erro, ainda assim redireciona
-                        window.location.href = "{{ url }}";
-                    });
-            };
+                // Envia os dados para o backend usando sendBeacon (POST)
+                navigator.sendBeacon("/log", JSON.stringify(dados));
+
+                // Redireciona para destino final
+                window.location.href = "{{ url }}";
+            })
         </script>
     </main>
 
