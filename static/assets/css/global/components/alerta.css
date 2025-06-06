@@ -1,0 +1,28 @@
+.alerta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    line-height: 1.2em;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+
+.alerta.informativo {
+    background: #daf8fb;
+    text-align: center;
+}
+
+.alerta.invalido {
+    text-align: center;
+    background: #fbdada;
+}
+
+.alerta.sucesso {
+    text-align: center;
+    background: #d5ffd1;
+}
