@@ -34,6 +34,35 @@
     margin-top: 10px;
 }
 
+#custom-url-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#mensagens {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#mensagens div {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.informativo {
+    background: #daf8fb;
+}
+
+.invalido {
+    background: #fbdada;
+}
+
 /* Mobile */
 @media (max-width: 767px) {
     #shorten {

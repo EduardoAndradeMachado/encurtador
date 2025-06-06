@@ -31,10 +31,14 @@
                     <label><input class="option" type="checkbox" name="select-custom-url">Personalizar URL</label>
                     <label class="hidden"><input class="option" type="checkbox" name="select-date">Definir data de expiração</label>
                 </div>
-                <input type="submit" value="Encurtar">
+                <input type="submit" value="Encurtar URL">
                 <div id="custom-url-block" class="hidden">
-                    <p>Defina sua slug personalizada</p>
-                    <input type="text" name="custom-url" autocomplete="off" value="" maxlength="24">
+                    <p>Defina o caminho personalizado</p>
+                    <input type="text" name="custom-url" autocomplete="off" value="" maxlength="24" placeholder="Digite o caminho personalizado">
+                    <div id="mensagens">
+                        <div class="informativo hidden">Seu link personalizado ficará com o seguinte caminho:</div>
+                        <div class="invalido hidden">Caminho do link é inválido: Deverá possuir entre 1 à 24 caracteres. Contendo apenas letras, números e hífens (separando palavras)</div>
+                    </div>
                 </div>
                 <div id="date-block" class="hidden">
                     <p>Data de expiração</p>
