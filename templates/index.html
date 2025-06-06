@@ -13,7 +13,6 @@
 <body>
     {% include 'header.html' %}
 
-
     <main>
         <section id="shorten">
             <a href="/">
@@ -21,19 +20,23 @@
             </a>
             <form action="/" method="post">
                 <input type="text" name="url" placeholder="Digite a url" autocomplete="off" autofocus required>
+                <div class="alerta invalido hidden">A url digitada é inválida.</div>
+
                 <div id="options">
                     <b>Opcionais:</b>
                     <label><input class="option" type="checkbox" name="select-custom-url">Personalizar URL</label>
-                    <label class="hidden"><input class="option" type="checkbox" name="select-date">Definir data de expiração</label>
+                    <label class="hidden"><input class="option" type="checkbox" name="select-date">Definir data de
+                        expiração</label>
                 </div>
                 <input type="submit" value="Encurtar URL">
                 <div id="custom-url-block" class="hidden">
                     <p>Defina o caminho personalizado</p>
-                    <input type="text" name="custom-url" autocomplete="off" value="" maxlength="24" placeholder="Digite o caminho personalizado">
-                    <div id="mensagens">
-                        <div class="informativo hidden">Seu link personalizado ficará com o seguinte caminho:</div>
-                        <div class="invalido hidden">Caminho do link é inválido: Deverá possuir entre 1 à 24 caracteres. Contendo apenas letras, números e hífens (separando palavras)</div>
-                    </div>
+                    <input type="text" name="custom-url" autocomplete="off" value="" maxlength="24"
+                        placeholder="Digite o caminho personalizado">
+                    <div class="alerta informativo hidden"></div>
+                    <div class="alerta invalido hidden">Caminho do link é inválido: Deverá possuir entre 1 à 24
+                        caracteres.
+                        Contendo apenas letras, números e hífens.</div>
                 </div>
                 <div id="date-block" class="hidden">
                     <p>Data de expiração</p>
