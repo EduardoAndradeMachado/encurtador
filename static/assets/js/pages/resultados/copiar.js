@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Utiliza a API de clipboard do navegador
     // Exibe alertas de sucesso ou erro
     const button = document.querySelector('input[type="submit"]')
+    const aviso = document.querySelector('.alerta.sucesso')
     button.addEventListener("click", (e) => {
         e.preventDefault(); // evita envio do formulário
 
@@ -11,10 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         navigator.clipboard.writeText(texto)
             .then(() => {
-                alert("Link copiado: " + texto);
+                aviso.classList.remove("hidden")
             })
             .catch(err => {
-                alert("Erro ao copiar: " + err);
+                aviso.classList.remove("add")
             });
     });
 });
