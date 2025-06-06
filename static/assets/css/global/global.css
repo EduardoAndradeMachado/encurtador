@@ -3,6 +3,7 @@
 @import url('parts/header.css');
 @import url('parts/footer.css');
 @import url('parts/forms.css');
+@import url('components/alerta.css');
 
 :root {
     --color-branco: #fff;
