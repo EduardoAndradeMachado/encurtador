@@ -3,14 +3,7 @@
 <html lang="pt-br">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ url_for('static', filename='assets/css/global/global.css') }}" rel="stylesheet">
-    <!-- Favicon para tema claro -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-black.svg') }}"
-        media="(prefers-color-scheme: light)">
-    <!-- Favicon para tema escuro -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/images/global/favicon-white.svg') }}"
-        media="(prefers-color-scheme: dark)">
+    {% include 'default-head.html' %}
     <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/resultado.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='assets/js/pages/resultados/copiar.js') }}"></script>
