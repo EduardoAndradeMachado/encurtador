@@ -3,13 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Utiliza a API de clipboard do navegador
     // Exibe alertas de sucesso ou erro
     const button = document.querySelector('input[type="submit"]')
+    const input = document.querySelector('input[type="text"]')
     const aviso = document.querySelector('.alerta.sucesso')
+
     button.addEventListener("click", (e) => {
-        e.preventDefault(); // evita envio do formulário
-
-        const input = document.querySelector('input[type="text"]')
+        e.preventDefault();
         const texto = input.value;
-
         navigator.clipboard.writeText(texto)
             .then(() => {
                 aviso.classList.remove("hidden")
