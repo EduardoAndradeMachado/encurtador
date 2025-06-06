@@ -128,7 +128,7 @@ def index():
                     if re.search(r'[^a-z0-9-]', short_slug):
                         return render_error("Caracter inválido na url.", 400)
                     
-                    if len(short_slug) > 30:
+                    if len(short_slug) > 24:
                         return render_error("Slug escolhida é muito longa.", 400)
                     # Adicionar após front ser aprimorado.
                     # if not short_slug.startswith(request.url_root):
