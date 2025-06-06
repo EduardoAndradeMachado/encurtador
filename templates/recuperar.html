@@ -6,6 +6,7 @@
     {% include 'default-head.html' %}
     <!-- Espefico da página -->
     <link href="{{ url_for('static', filename='assets/css/pages/recuperar.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='assets/js/pages/recuperar/validar.js') }}"></script>
     <title>Recuperar</title>
 </head>
 
@@ -20,7 +21,8 @@
             </a>
             <form action="/recuperar" method="post">
                 <input type="text" name="url" placeholder="Digite a url original" autocomplete="off" autofocus required>
-                <input type="submit" value="Recuperar URL">
+                    <div class="alerta invalido hidden">A url digitada é inválida.</div>
+                <input type="submit" value="Recuperar informações da url encurtada">
             </form>
         </section>
     </main>
